@@ -35,10 +35,10 @@ def calculate_exponents(int_binary: str, decimal_binary: str) -> (int, str):
     if int_binary.__contains__('1'):
         length: int = len(int_binary)
 
-        last_index = length  # Registra a última posição da string onde um '1' for encontrado
-        for i in range(length-1, 0, -1):
+        last_index = 0  # Registra a última posição da string onde um '1' for encontrado
+        for i in range(length-1, -1, -1):
             if int_binary[i] == '1':
-                last_index = i+1
+                last_index = length - (i+1)
 
         int_exponent = last_index
 
@@ -59,10 +59,10 @@ def calculate_exponents(int_binary: str, decimal_binary: str) -> (int, str):
 def convert_decimal_to_binary(value: float) -> str:
     result = ''
 
-    while value != 1.0:
+    while value != 0.0:
         value = value * 2
 
-        if value > 1.0:
+        if value >= 1.0:
             result += '1'
             value -= 1
         elif value < 1.0:
@@ -82,24 +82,31 @@ def calculate_mantissa(int_binary: str, float_binary: str, exponent: int) -> str
         merged_binary = int_binary + float_binary
         i = start
         while len(mantissa) < 23:
-            mantissa += merged_binary[i]
+            if i < len(merged_binary):
+                mantissa += merged_binary[i]
 
-            i += 1
+                i += 1
 
-            if i == len(merged_binary):
-                i = start
+            else:
+                if len(float_binary) == 0:
+                    mantissa += '0'
+                else:
+                    i = start
 
     elif exponent < 0:
         start = abs(exponent)
 
         i = start
         while len(mantissa) < 23:
-            mantissa += float_binary[i]
+            if len(float_binary) == 0:
+                mantissa += '0'
+            else:
+                mantissa += float_binary[i]
 
-            i += 1
+                i += 1
 
-            if i == len(float_binary):
-                i = start
+                if i == len(float_binary):
+                    i = start
 
     return mantissa
 
