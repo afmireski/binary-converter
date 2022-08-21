@@ -35,7 +35,7 @@ def calculate_exponents(int_binary: str, decimal_binary: str) -> (int, str):
     if int_binary.__contains__('1'):
         length: int = len(int_binary)
 
-        last_index = length # Registra a última posição da string onde um '1' for encontrado
+        last_index = length  # Registra a última posição da string onde um '1' for encontrado
         for i in range(length-1, 0, -1):
             if int_binary[i] == '1':
                 last_index = i+1
@@ -93,7 +93,7 @@ def calculate_mantissa(int_binary: str, float_binary: str, exponent: int) -> str
         start = abs(exponent)
 
         i = start
-        while len(mantissa) <= 23:
+        while len(mantissa) < 23:
             mantissa += float_binary[i]
 
             i += 1
@@ -107,13 +107,14 @@ def calculate_mantissa(int_binary: str, float_binary: str, exponent: int) -> str
 def convert_float_to_binary(number: float) -> str:
     has_signal: int = 0
 
-    partioned_number = str(number).split('.')
-
-    int_value = abs(int(partioned_number[0]))
-    decimal_value = number - int_value
-
     if number < 0:
         has_signal = 1
+        number = -number
+
+    partioned_number = str(number).split('.')
+
+    int_value = int(partioned_number[0])
+    decimal_value = number - int_value
 
     binary_int_value = convert_int_to_binary(int_value)
     binary_decimal_value = convert_decimal_to_binary(decimal_value)
@@ -121,8 +122,6 @@ def convert_float_to_binary(number: float) -> str:
     exponent_int, exponent_bin = calculate_exponents(binary_int_value, binary_decimal_value)
 
     mantissa = calculate_mantissa(binary_int_value, binary_decimal_value, exponent_int)
-
-    print(f'Mantissa -> {mantissa}\n\n')
 
     response = f'{has_signal}{exponent_bin}{mantissa}'
 
