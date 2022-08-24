@@ -1,7 +1,21 @@
+def get_bits_len(number: int) -> int:
+    i = 0
+
+    while number >= (2**i):
+        i += 1
+
+    return i
+
+
 def convert_int_to_binary(number: int) -> str:
     result = ''
 
-    max_value: int = 128
+    if number == 0:
+        return '0'
+
+    bits: int = get_bits_len(number)
+
+    max_value: int = 2**bits  # max_value: int = 128
     value: int = number
 
     while value > 0:
@@ -12,19 +26,35 @@ def convert_int_to_binary(number: int) -> str:
             result += '0'
         max_value = max_value//2
 
-    while len(result) < 8:
+    if result[0] == '0':
+        result = result[1:]
+
+    while len(result) < bits:
         result += '0'
 
     return result
 
 
-def convert_int_to_binary_excess_127(value: int) -> str:
-    if -127 <= value <= 128:
-        excess_value: int = value + 127
+def convert_int_to_binary_excess_127(number: int) -> str:
+    if -127 <= number <= 128:
+        excess_value: int = number + 127
 
-        excess_binary = convert_int_to_binary(excess_value)
+        max_value: int = 128  # max_value: int = 128
+        value: int = excess_value
 
-        return excess_binary
+        result: str = ''
+        while value > 0:
+            if value >= max_value:
+                result += '1'
+                value -= max_value
+            else:
+                result += '0'
+            max_value = max_value // 2
+
+        while len(result) < 8:
+            result += '0'
+
+        return result
     else:
         return '00000000'
 
@@ -51,6 +81,9 @@ def calculate_exponents(int_binary: str, decimal_binary: str) -> (int, str):
 
         int_exponent = -j
 
+    else:
+        int_exponent = -127
+
     binary_exponent = convert_int_to_binary_excess_127(int_exponent)
 
     return int_exponent, binary_exponent
@@ -58,6 +91,9 @@ def calculate_exponents(int_binary: str, decimal_binary: str) -> (int, str):
 
 def convert_decimal_to_binary(value: float) -> str:
     result = ''
+
+    if value == 0.0:
+        return '0'
 
     while value != 0.0:
         value = value * 2
@@ -88,17 +124,17 @@ def calculate_mantissa(int_binary: str, float_binary: str, exponent: int) -> str
                 i += 1
 
             else:
-                if len(float_binary) == 0:
+                if len(float_binary) == 0 or float_binary == '0':
                     mantissa += '0'
                 else:
                     i = start
 
-    elif exponent < 0:
+    elif exponent <= 0:
         start = abs(exponent)
 
         i = start
         while len(mantissa) < 23:
-            if len(float_binary) == 0:
+            if len(float_binary) == 0 or float_binary == '0':
                 mantissa += '0'
             else:
                 mantissa += float_binary[i]
@@ -118,9 +154,9 @@ def convert_float_to_binary(number: float) -> str:
         has_signal = 1
         number = -number
 
-    partioned_number = str(number).split('.')
+    aux = str(number).split('.')
 
-    int_value = int(partioned_number[0])
+    int_value = int(aux[0])
     decimal_value = number - int_value
 
     binary_int_value = convert_int_to_binary(int_value)
@@ -142,7 +178,6 @@ def main():
     response = convert_float_to_binary(number)
 
     print(f'Stored {number}:\n\t[{response}] - {len(response)} bits')
-
 
 
 main()
