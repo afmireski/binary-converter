@@ -3,6 +3,7 @@
     * AUTHOR: afmireski (André Felipe Mireski)
 """
 
+
 def get_bits_len(number: int) -> int:
     i = 0
 
