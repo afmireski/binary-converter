@@ -45,7 +45,7 @@ def convert_int_to_binary_excess_127(number: int) -> str:
     if -127 <= number <= 128:
         excess_value: int = number + 127
 
-        max_value: int = 128  # max_value: int = 128
+        max_value: int = 128
         value: int = excess_value
 
         result: str = ''
