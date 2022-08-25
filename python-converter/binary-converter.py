@@ -21,7 +21,7 @@ def convert_int_to_binary(number: int) -> str:
 
     bits: int = get_bits_len(number)
 
-    max_value: int = 2**bits  # max_value: int = 128
+    max_value: int = 2**bits
     value: int = number
 
     while value > 0:
