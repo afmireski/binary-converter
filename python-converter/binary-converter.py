@@ -1,3 +1,8 @@
+"""
+    # BINARY CONVERTER
+    * AUTHOR: afmireski (André Felipe Mireski)
+"""
+
 def get_bits_len(number: int) -> int:
     i = 0
 
@@ -172,12 +177,15 @@ def convert_float_to_binary(number: float) -> str:
 
 
 def main():
-    print('Type any float number:')
-    number = float(input('> '))
+    print('############################################################')
+    print('# Binary Converter - PYTHON')
+    print('\tType any float number:')
+    number = float(input('\t> '))
 
     response = convert_float_to_binary(number)
 
-    print(f'Stored {number}:\n\t[{response}] - {len(response)} bits')
+    print(f'\n\n\tStored {number}:\n\t> [{response}] - {len(response)} bits')
+    print('############################################################')
 
 
 main()
