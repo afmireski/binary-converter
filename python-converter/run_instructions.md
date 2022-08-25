@@ -19,7 +19,7 @@
 	* Defina que quer executar o arquivo: `binary-converter.py`
     
 * Independente do caminho o programa vai executar.
-* Informe um número `float` qualquer, como aqueles contidos em `run_instructions.md`.
+* Informe um número `float` qualquer, como aqueles contidos em `my_test_data.md`.
 * Espere o resultado da conversão e o compare com o resultado do site do [conversor da IEEE](https://www.h-schmidt.net/FloatConverter/IEEE754.html).
 * Eles devem ser iguais
 * **Resultado esperado**
