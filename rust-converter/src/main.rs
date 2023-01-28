@@ -1,4 +1,4 @@
-use std::io;
+use std::{io, result};
 
 fn get_int_value(n: f32) -> i32 {
     let s = n.to_string();
@@ -79,6 +79,68 @@ fn convert_decimal_to_binary(number: f32) -> String {
     result
 }
 
+fn convert_int_to_binary_excess_127(expoent: i16) -> String {
+    if -127 <= expoent && expoent <= 128 {
+        let mut value: i16 = 255;
+
+        let mut max_value: i16 = 128;
+
+        let mut result = String::new();
+
+        while value > 0 {
+            if value >= max_value {
+                result.push('0');
+                value -= max_value;
+            } else {
+                result.push('0');
+            }
+            max_value /= 2;
+        }
+
+        while result.len() < 8 {
+            result.push('0');
+        }
+
+        return result;
+    } else {
+        return String::from("00000000");
+    }
+}
+
+fn calculate_exponents(int_binary: &str, decimal_binary: &str) -> (i16, String) {
+    let mut int_exponent: i16 = -127;
+
+    if (int_binary.contains('1')) {
+        let len = int_binary.len();
+
+        let mut last_index: usize = len;
+        for (i, c) in int_binary.chars().enumerate() {
+            if c == '1' {
+                last_index = len - (i + 1);
+                break;
+            }
+        }
+
+        int_exponent = last_index as i16;
+    } else if decimal_binary.contains('1') {
+        let len = decimal_binary.len();
+
+        let mut last_index: usize = 1;
+        for (i, c) in int_binary.chars().enumerate() {
+            if c == '1' {
+                last_index = i + 1;
+                break;
+            }
+        }
+
+        int_exponent = -(last_index as i16);
+    }
+
+    let binary_exponent = convert_int_to_binary_excess_127(int_exponent);
+
+    return (int_exponent, binary_exponent);
+}
+
 fn convert_float_to_binary(mut number: f32) {
     let mut has_signal: u8 = 0;
 
@@ -91,6 +153,10 @@ fn convert_float_to_binary(mut number: f32) {
     let float_value = number - (int_value as f32);
 
     let binary_int_value = convert_int_to_binary(int_value);
+    let binary_decimal_value = convert_decimal_to_binary(float_value);
+
+    let (int_exponent, exponent_bin) =
+        calculate_exponents(&binary_int_value, &binary_decimal_value);
 }
 
 fn main() {
