@@ -141,11 +141,59 @@ fn calculate_exponents(int_binary: &str, decimal_binary: &str) -> (i16, String) 
     return (int_exponent, binary_exponent);
 }
 
-fn convert_float_to_binary(mut number: f32) {
-    let mut has_signal: u8 = 0;
+fn calculate_mantissa(int_binary: &str, decimal_binary: &str, exponent: i16) -> String {
+    let mut mantissa = String::new();
+
+    if exponent > 0 {
+        let length = int_binary.len();
+
+        let start = length - (exponent as usize);
+
+        let mut merged_binary = String::new();
+        merged_binary.push_str(int_binary);
+        merged_binary.push_str(decimal_binary);
+
+        let mut i = start;
+        while mantissa.len() < 23 {
+            if i < merged_binary.len() {
+                mantissa.push_str(&merged_binary[i..i + 1]);
+
+                i += 1;
+            } else {
+                if decimal_binary.len() == 0 || decimal_binary == "0" {
+                    mantissa.push('0');
+                } else {
+                    i = start;
+                }
+            }
+        }
+    } else {
+        let start = exponent.abs() as usize;
+
+        let mut i = start;
+        while mantissa.len() < 23 {
+            if decimal_binary.len() == 0 || decimal_binary == "0" {
+                mantissa.push('0');
+            } else {
+                mantissa.push_str(&decimal_binary[i..i + 1]);
+
+                i += 1;
+
+                if i == decimal_binary.len() {
+                    i = start;
+                }
+            }
+        }
+    }
+
+    mantissa
+}
+
+fn convert_float_to_binary(mut number: f32) -> String {
+    let mut has_signal: char = '0';
 
     if number < 0.0 {
-        has_signal = 1;
+        has_signal = '1';
         number = -number;
     }
 
@@ -155,8 +203,17 @@ fn convert_float_to_binary(mut number: f32) {
     let binary_int_value = convert_int_to_binary(int_value);
     let binary_decimal_value = convert_decimal_to_binary(float_value);
 
-    let (int_exponent, exponent_bin) =
+    let (int_exponent, bin_exponent) =
         calculate_exponents(&binary_int_value, &binary_decimal_value);
+
+    let mantissa = calculate_mantissa(&binary_int_value, &binary_decimal_value, int_exponent);
+
+    let mut response = String::new();
+    response.push(has_signal);
+    response.push_str(&bin_exponent);
+    response.push_str(&mantissa);
+
+    response
 }
 
 fn main() {
@@ -175,5 +232,8 @@ fn main() {
         .parse()
         .expect("Please try again and type a float number");
 
-    convert_float_to_binary(input);
+    let response = convert_float_to_binary(input);
+    
+    println!("\n\n\tStored {}: \n\t[{} - {}]", input, response, response.len());
+    println!("###############################################");
 }
