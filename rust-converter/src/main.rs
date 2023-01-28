@@ -1,4 +1,4 @@
-use std::{io, result};
+use std::io;
 
 fn get_int_value(n: f32) -> i32 {
     let s = n.to_string();
@@ -110,7 +110,7 @@ fn convert_int_to_binary_excess_127(expoent: i16) -> String {
 fn calculate_exponents(int_binary: &str, decimal_binary: &str) -> (i16, String) {
     let mut int_exponent: i16 = -127;
 
-    if (int_binary.contains('1')) {
+    if int_binary.contains('1') {
         let len = int_binary.len();
 
         let mut last_index: usize = len;
@@ -125,7 +125,7 @@ fn calculate_exponents(int_binary: &str, decimal_binary: &str) -> (i16, String) 
     } else if decimal_binary.contains('1') {
         let len = decimal_binary.len();
 
-        let mut last_index: usize = 1;
+        let mut last_index: usize = len-1;
         for (i, c) in int_binary.chars().enumerate() {
             if c == '1' {
                 last_index = i + 1;
