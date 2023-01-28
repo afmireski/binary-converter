@@ -126,7 +126,7 @@ fn calculate_exponents(int_binary: &str, decimal_binary: &str) -> (i16, String) 
         let len = decimal_binary.len();
 
         let mut last_index: usize = len-1;
-        for (i, c) in int_binary.chars().enumerate() {
+        for (i, c) in decimal_binary.chars().enumerate() {
             if c == '1' {
                 last_index = i + 1;
                 break;
