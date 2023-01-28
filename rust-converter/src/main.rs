@@ -1,4 +1,4 @@
-use std::{io, num};
+use std::io;
 
 fn get_int_value(n: f32) -> i32 {
     let s = n.to_string();
@@ -27,7 +27,7 @@ fn get_bit_len(number: i32) -> u8 {
 fn convert_int_to_binary(number: i32) -> String {
     let bits = get_bit_len(number);
 
-    let mut result = String::from("");
+    let mut result = String::new();
 
     if number == 0 {
         return String::from("0");
@@ -52,6 +52,28 @@ fn convert_int_to_binary(number: i32) -> String {
 
     while result.len() < bits.into() {
         result.push('0');
+    }
+
+    result
+}
+
+fn convert_decimal_to_binary(number: f32) -> String {
+    if number == 0.0 {
+        return String::from("0");
+    }
+
+    let mut result = String::new();
+
+    let mut value = number;
+    while value != 0.0 {
+        value *= 2.0;
+
+        if value >= 1.0 {
+            result.push('1');
+            value -= 1.0;
+        } else if value < 1.0 {
+            result.push('0');
+        }
     }
 
     result
