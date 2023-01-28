@@ -81,7 +81,7 @@ fn convert_decimal_to_binary(number: f32) -> String {
 
 fn convert_int_to_binary_excess_127(expoent: i16) -> String {
     if -127 <= expoent && expoent <= 128 {
-        let mut value: i16 = 255;
+        let mut value: i16 = expoent + 127;
 
         let mut max_value: i16 = 128;
 
@@ -89,7 +89,7 @@ fn convert_int_to_binary_excess_127(expoent: i16) -> String {
 
         while value > 0 {
             if value >= max_value {
-                result.push('0');
+                result.push('1');
                 value -= max_value;
             } else {
                 result.push('0');
