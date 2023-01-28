@@ -234,6 +234,6 @@ fn main() {
 
     let response = convert_float_to_binary(input);
     
-    println!("\n\n\tStored {}: \n\t[{} - {}]", input, response, response.len());
+    println!("\n\nStored {}: \n[{} - {}]", input, response, response.len());
     println!("###############################################");
 }
